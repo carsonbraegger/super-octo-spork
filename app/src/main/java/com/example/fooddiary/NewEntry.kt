@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.room.Room
+import com.example.fooddiary.data.Item
 import com.example.fooddiary.data.ItemRoomDatabase
 
 lateinit var homeButton2: Button
@@ -34,11 +35,17 @@ class NewEntry : AppCompatActivity() {
             intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
         }
+        val db = Room.databaseBuilder(
+            applicationContext,
+            ItemRoomDatabase::class.java, "Item"
+        ).allowMainThreadQueries().build()
+        val ItemDao = db.ItemDao()
+
         saveButton.setOnClickListener{
             var name = nameFood.toString()
             var cal = calorieNum.toString()
-            food_Diary().addToBase(name,cal)
-
+//            food_Diary().addToBase(name,cal)
+            ItemDao.insertAll(Item(0,name, cal))
         }
 
 

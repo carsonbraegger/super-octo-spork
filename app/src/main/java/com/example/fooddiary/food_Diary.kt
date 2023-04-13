@@ -17,36 +17,38 @@ lateinit var homeButton: Button
 class food_Diary() : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
 
+    private lateinit var ItemDao: ItemDao;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_diary)
 
-
-        homeButton = findViewById(R.id.HomeButton)
-        homeButton.setOnClickListener {
-            intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
         val db = Room.databaseBuilder(
             applicationContext,
             ItemRoomDatabase::class.java, "Item"
         ).allowMainThreadQueries().build()
-        val ItemDao = db.ItemDao()
+        ItemDao = db.ItemDao()
+        homeButton = findViewById(R.id.HomeButton)
+        homeButton.setOnClickListener {
+            intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
 
 
 
 
 
-            val dataEntry: List<Item> = ItemDao.getAll()
-            val entries: TextView = findViewById(R.id.TextView2)
 
-            entries.text = dataEntry.toString()
+
         }
+        val dataEntry: List<Item> = ItemDao.getAll()
+        val entries: TextView = findViewById(R.id.TextView2)
+
+        entries.text = dataEntry.toString()
 
 
     }
 
     fun addToBase(name: String, calorie: String) {
-//        ItemDao.insertAll(Item(0,name, calorie))
+        ItemDao.insertAll(Item(0,name, calorie))
 
     }
 
